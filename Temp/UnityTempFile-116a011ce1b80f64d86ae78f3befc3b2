@@ -296,8 +296,12 @@
 /define:ENABLE_LEGACY_INPUT_MANAGER
 /define:CSHARP_7_OR_LATER
 /define:CSHARP_7_3_OR_NEWER
+"Assets/AutomaticScript/ControlPlayerSystem_wrapper.cs"
+"Assets/AutomaticScript/ControlPlayer_wrapper.cs"
 "Assets/Components/Activity.cs"
 "Assets/Components/Angle.cs"
+"Assets/Components/Controlable.cs"
+"Assets/Components/Destination.cs"
 "Assets/Components/Distraction.cs"
 "Assets/Components/LoopTime.cs"
 "Assets/Components/PatrolPoints.cs"
@@ -310,4 +314,5 @@
 "Assets/NavMesh Example Project/Assets/NavMeshComponents/Scripts/NavMeshModifier.cs"
 "Assets/NavMesh Example Project/Assets/NavMeshComponents/Scripts/NavMeshModifierVolume.cs"
 "Assets/NavMesh Example Project/Assets/NavMeshComponents/Scripts/NavMeshSurface.cs"
-"Assets/Player.cs"
+"Assets/Systems/ControlPlayerSystem.cs"
+"Assets/Systems/NewSystem.cs"

@@ -298,6 +298,7 @@
 /define:CSHARP_7_3_OR_NEWER
 "Assets/Components/Activity.cs"
 "Assets/Components/Angle.cs"
+"Assets/Components/Destination.cs"
 "Assets/Components/Distraction.cs"
 "Assets/Components/LoopTime.cs"
 "Assets/Components/PatrolPoints.cs"
@@ -311,4 +312,5 @@
 "Assets/NavMesh Example Project/Assets/NavMeshComponents/Scripts/NavMeshModifierVolume.cs"
 "Assets/NavMesh Example Project/Assets/NavMeshComponents/Scripts/NavMeshSurface.cs"
 "Assets/Player.cs"
+"Assets/Systems/ControlPlayer.cs"
 "Assets/Systems/NewSystem.cs"
