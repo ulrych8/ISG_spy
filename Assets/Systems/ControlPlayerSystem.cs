@@ -1,12 +1,25 @@
 ﻿using UnityEngine;
 using FYFY;
 using UnityEngine.AI;
+using UnityStandardAssets.Characters.ThirdPerson;
 
 public class ControlPlayerSystem : FSystem {
 
 	private Family _controlableGO = FamilyManager.getFamily(new AllOfComponents(typeof(Controlable)));
 
 	public NavMeshAgent agent;
+
+	public ThirdPersonCharacter character;
+
+	public ControlPlayerSystem(){
+		//only working because only one controlable
+		foreach (GameObject go in _controlableGO){
+			agent = go.GetComponent<NavMeshAgent>();
+			character = go.GetComponent<ThirdPersonCharacter>();
+		}
+
+		agent.updateRotation = false;
+	}
 
 	// Use this to update member variables when system pause. 
 	// Advice: avoid to update your families inside this function.
@@ -23,25 +36,21 @@ public class ControlPlayerSystem : FSystem {
 		if (Input.GetMouseButtonDown(0))
 		{
 
-			foreach (GameObject go in _controlableGO){
-				agent = go.GetComponent<NavMeshAgent>();
-			}
-
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			Vector3 mousePosition = Input.mousePosition;
+			Ray ray = Camera.main.ScreenPointToRay(mousePosition);
 			RaycastHit hit;
 
-			//if ( Physics.Raycast(ray, out hit,1000) ) 
-			if ( Physics.Raycast(Camera.main.transform.position,Camera.main.transform.forward, out hit,Mathf.Infinity,0) ) 
-			{
+			if(Physics.Raycast(ray, out hit) == true) {
+				Debug.Log("finaalllyyy");
 				agent.SetDestination(hit.point);
-				Debug.Log("destination defined");
 			}else{
-				Debug.Log("nothing ma men "+hit.point);
+				Debug.Log("herre we go again");
 			}
-			Debug.DrawRay(Camera.main.transform.position,Camera.main.transform.forward, Color.red);
-			Debug.DrawRay(new Vector3(1f,1f,1f), Vector3.up, Color.blue);
-			Debug.Log("camera position etc. :  "+Camera.main.transform.position+" and as well"+Camera.main.transform.forward);
-
+		}
+		if (agent.remainingDistance > agent.stoppingDistance+0.2f){
+			character.Move(agent.desiredVelocity,false,false);
+		}else{
+			character.Move(Vector3.zero,false,false);
 		}
 	}
 }
