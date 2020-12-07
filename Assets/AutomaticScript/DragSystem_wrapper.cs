@@ -9,4 +9,9 @@ public class DragSystem_wrapper : MonoBehaviour
 		this.hideFlags = HideFlags.HideInInspector; // Hide this component in Inspector
 	}
 
+	public void removeOnClick(UnityEngine.GameObject go)
+	{
+		MainLoop.callAppropriateSystemMethod ("DragSystem", "removeOnClick", go);
+	}
+
 }

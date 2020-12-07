@@ -20,6 +20,11 @@ public class PlayCodeSystem : FSystem {
 	protected override void onResume(int currentFrame){
 	}
 
+	public void PressPlay(GameObject go){
+		go.GetComponent<Playable>().playButtonClicked = true;
+		Debug.Log("Button pressed");
+	}	
+
 	// Use to process your families.
 	protected override void onProcess(int familiesUpdateCount) {
 

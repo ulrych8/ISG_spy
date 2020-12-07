@@ -7,8 +7,5 @@ public class Playable : MonoBehaviour {
 	public bool blocMoveToPlaying = false; 
 	public string destinationName;
 
-	public void PressPlay(){
-		playButtonClicked = true;
-		Debug.Log("Button pressed");
-	}	
+	
 }

@@ -48,16 +48,4 @@ public class Draggable : MonoBehaviour,  IPointerDownHandler, IDragHandler, IPoi
         isDragging = false;
     }
 
-    public void removeOnClick(){///change this functionn...... dont forget about instantiate
-
-    	/*fixedPosition = currentTransform.position;
-        //mainContent = currentTransform.parent.gameObject;
-        totalChild = mainContent.transform.childCount;
-
-        mainContent.transform.GetChild(totalChild-1).position = fixedPosition;*/
-
-        removeButtonClicked = true;
-    }
-
-
 }

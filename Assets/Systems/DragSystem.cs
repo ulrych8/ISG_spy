@@ -32,6 +32,12 @@ public class DragSystem : FSystem {
 	protected override void onResume(int currentFrame){
 	}
 
+	public void removeOnClick(GameObject go){
+        go.GetComponent<Draggable>().removeButtonClicked = true;
+        Debug.Log("remove button clicked");
+    }
+
+
 	// Use to process your families.
 	protected override void onProcess(int familiesUpdateCount) {
 
@@ -107,6 +113,7 @@ public class DragSystem : FSystem {
         		slotTransform.position = slotInfo.fixedPosition;
         	}
         	if (slotInfo.removeButtonClicked){
+        		Debug.Log("button clicked and I know it");
         		//update 
         		Vector3 previousPosition = slotInfo.fixedPosition;
         		Vector3 tempPosition;
