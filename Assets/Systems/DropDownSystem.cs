@@ -1,23 +1,46 @@
-﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 using FYFY;
 
 public class DropdownSystem : FSystem {
 
+	//famille d'objet utilisant un dropdown
 	private Family dropdownGO = FamilyManager.getFamily(new AllOfComponents(typeof(Dropdownable)));
 
-	//prefab use
-
+	
 	private char currentMoveToLetter = 'A';
 
-	// Use this to update member variables when system pause. 
-	// Advice: avoid to update your families inside this function.
-	protected override void onPause(int currentFrame) {
-	}
+	public DropdownSystem(){
+		dropdownGO.addEntryCallback(Callback2);
 
-	// Use this to update member variables when system resume.
-	// Advice: avoid to update your families inside this function.
-	protected override void onResume(int currentFrame){
+		//pour chaque gameobject de la famille on initialise le dropdown
+		foreach (GameObject dd in dropdownGO){
+			Dropdownable info = dd.GetComponent<Dropdownable>();
+			Dropdown dropdown = dd.transform.GetComponent<Dropdown>();
+			dropdown.options.Clear();
+			List<string> optionList = new List<string>();
+			optionList.Add("+");
+			for (var i='A'; i<currentMoveToLetter; i++){
+				optionList.Add(""+i);
+			}
+			optionList.Add(" ");
+			//fill dropdown options
+			foreach (var option in optionList){
+				dropdown.options.Add(new Dropdown.OptionData(){ text = option });
+			}
+			//Je pourrais dans le onprocess regarder a chaque fois si la valeur change pour tous les membres de la famille
+			//------------ AddListener
+			dropdown.onValueChanged.AddListener(delegate{ DropdownOptionSelected(dropdown,info); });
+			//------------
+
+			dropdown.value = 1 + currentMoveToLetter - 'A';
+
+			info.hotspot = new Vector2(info.cursorTexture.width/2,info.cursorTexture.height);
+			info.dropdown = dropdown;
+		}
+
 	}
 
 	// Use to process your families.
@@ -28,7 +51,7 @@ public class DropdownSystem : FSystem {
 			foreach (GameObject dd in dropdownGO){
 
 				Dropdownable ddInfo = dd.GetComponent<Dropdownable>();
-
+				//si le dropdown et active et à l'option voulu lors du clic on ajoute la coordonnée au dropdown
 				if (!dd.active || ddInfo.dropdown.value!=0) continue;
 
 				Vector3 mousePosition = Input.mousePosition;
@@ -44,7 +67,7 @@ public class DropdownSystem : FSystem {
 					newMapPointer.GetComponent<Destination>().destination = hit.point;
 					//add new option to every dropdown
 					foreach (GameObject ddGO in dropdownGO){
-						if (!ddGO.active) continue;
+						//if (!ddGO.active) continue;
 						Dropdownable ddGOInfo = ddGO.GetComponent<Dropdownable>();
 						ddGOInfo.dropdown.options.Add(new Dropdown.OptionData(){ text = ""+currentMoveToLetter });
 					}
@@ -55,11 +78,7 @@ public class DropdownSystem : FSystem {
 
 					Cursor.SetCursor(null, Vector2.zero, ddInfo.cursorMode);
 					currentMoveToLetter++;
-					//add new option to every dropdown
-					foreach (GameObject ddGO in dropdownGO){
-						Dropdownable ddGOInfo = ddGO.GetComponent<Dropdownable>();
-						ddGOInfo.currentMoveToLetterInSystem = currentMoveToLetter;
-					}
+					
 				}else{
 					Debug.Log("click not on map");
 					Cursor.SetCursor(null, Vector2.zero, ddInfo.cursorMode);
@@ -67,5 +86,18 @@ public class DropdownSystem : FSystem {
 				}
 			}
 		}
+	}
+
+	void DropdownOptionSelected(Dropdown dropdown, Dropdownable info){
+		Debug.Log(" clikos !! chose option "+dropdown.value);
+		if (dropdown.value==0){
+			Cursor.SetCursor(info.cursorTexture, info.hotspot, info.cursorMode);
+		}
+	}
+
+	void Callback2(GameObject go){
+		Dropdownable info = go.GetComponent<Dropdownable>();
+		Dropdown dropdown = go.transform.GetComponent<Dropdown>();
+		dropdown.onValueChanged.AddListener(delegate{ DropdownOptionSelected(dropdown,info); });
 	}
 }

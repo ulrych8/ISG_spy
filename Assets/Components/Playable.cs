@@ -5,7 +5,10 @@ public class Playable : MonoBehaviour {
 	public bool playButtonClicked = false;
 
 	public bool blocMoveToPlaying = false; 
+	public bool blocWaitForPlaying = false; 
+
 	public string destinationName;
+	public float waitTimeLeft = 0f;
 
 	
 }

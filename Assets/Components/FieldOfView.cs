@@ -17,12 +17,12 @@ public class FieldOfView : MonoBehaviour {
 	public LayerMask targetMask;
 	public LayerMask wallMask;
 
-	void Awake(){
+	/*void Awake(){
 		viewMesh = new Mesh();
 		viewMesh.name = "View of "+gameObject.name;
 		viewMeshFilter.mesh = viewMesh;
 
 		targetMask = LayerMask.GetMask("Player");
 		wallMask = LayerMask.GetMask("Wall");
-	}
+	}*/
 }

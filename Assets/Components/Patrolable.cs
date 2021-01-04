@@ -10,7 +10,7 @@ public class Patrolable : MonoBehaviour {
 
 	public List<Vector3> patrolPoints = new List<Vector3>() ;
 
-	void Awake(){
+	/*void Awake(){
 		GameObject Patrol = GameObject.Find("PatrolPoints");
 		foreach (Transform child in Patrol.transform)
 		{
@@ -18,5 +18,5 @@ public class Patrolable : MonoBehaviour {
 		}
 		Debug.Log(patrolPoints);
 
-	}
+	}*/
 }

@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class ControlSystem : FSystem {
+	// Has to be after PatrolSystem in the main loop
 
 	private Family _controlableGO = FamilyManager.getFamily(new AllOfComponents(typeof(Controlable)));
 
@@ -51,7 +52,16 @@ public class ControlSystem : FSystem {
 		foreach (GameObject go in playableGO){	
 			Playable info = go.GetComponent<Playable>();
 
-			if (info.blocMoveToPlaying && !playerIsMoving){
+			if (info.blocWaitForPlaying && !playerIsMoving){
+				character.Move(Vector3.zero,false,false);
+				if (info.waitTimeLeft>0){
+					info.waitTimeLeft -= Time.deltaTime;
+				}else{
+					info.waitTimeLeft = 0;
+					info.blocWaitForPlaying = false;
+				}
+			}
+			else if (info.blocMoveToPlaying && !playerIsMoving){
 				//get destination
 				Debug.Log("Setting new destination ...");
 				GameObject destinations = GameObject.Find("Destinations");

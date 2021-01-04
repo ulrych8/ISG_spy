@@ -13,7 +13,7 @@ public class DragSystem : FSystem {
 
     private int totalChild;
     private const float extraSpace = 11f;
-    private const int closeButtonIndex = 1;
+    private const int closeButtonIndex = 1;	
     private const int dropDownIndex = 3;
 
 	// Use this to update member variables when system pause. 
@@ -22,15 +22,11 @@ public class DragSystem : FSystem {
     public DragSystem(){
     	mainContent = GameObject.Find("Canvas").transform.Find("CodePanel").Find("SlotPanel");
     	totalChild = mainContent.childCount;
+    	foreach (GameObject go in _draggableGO){
+    		go.GetComponent<Draggable>().fixedPosition = go.transform.position;
+    	}
     }
 
-	protected override void onPause(int currentFrame) {
-	}
-
-	// Use this to update member variables when system resume.
-	// Advice: avoid to update your families inside this function.
-	protected override void onResume(int currentFrame){
-	}
 
 	public void removeOnClick(GameObject go){
         go.GetComponent<Draggable>().removeButtonClicked = true;
@@ -67,16 +63,16 @@ public class DragSystem : FSystem {
 
 		        		slotInfo.isChildOfSlotPanel = true;
 		        		totalChild++;
-		        		//able close button
-		        		slotTransform.GetChild(closeButtonIndex).gameObject.SetActive(true);
-		        		//if moveSlot able dropDown
-		        		if (slot.name.Split(' ')[0].Split('(')[0] == "MoveSlot"){
-		        			slotTransform.GetChild(dropDownIndex).gameObject.SetActive(true);
+
+		        		//set all child to active
+		        		foreach (Transform child in slotTransform){
+		        			child.gameObject.SetActive(true);
 		        		}
 
 		        		//duplication
 		        		GameObject originalSlot = GameObject.Find("Canvas").transform.Find("SelectionPanel").Find(slot.name.Split(' ')[0].Split('(')[0]).gameObject;
 		        		GameObject clone = UnityEngine.Object.Instantiate(originalSlot, originalSlot.transform.parent.transform, true); 
+		        		clone.GetComponent<Draggable>().fixedPosition = clone.transform.position;
 		        		FYFY.GameObjectManager.bind(clone);
 		        	}
 
@@ -113,7 +109,6 @@ public class DragSystem : FSystem {
         		slotTransform.position = slotInfo.fixedPosition;
         	}
         	if (slotInfo.removeButtonClicked){
-        		Debug.Log("button clicked and I know it");
         		//update 
         		Vector3 previousPosition = slotInfo.fixedPosition;
         		Vector3 tempPosition;

@@ -12,12 +12,11 @@ public class Dropdownable : MonoBehaviour
 
 	public GameObject mapPointerPrefab;
 
-	public char currentMoveToLetterInSystem = 'A';
+	//public char currentMoveToLetterInSystem = 'A';
 
 	public Dropdown dropdown;
-
+	/*
 	void Awake(){
-		Debug.Log("B-A is "+(int)('B'-'A'));
 		dropdown = transform.GetComponent<Dropdown>();
 		dropdown.options.Clear();
 		List<string> optionList = new List<string>();
@@ -38,14 +37,9 @@ public class Dropdownable : MonoBehaviour
 		dropdown.value = 1 + currentMoveToLetterInSystem - 'A';
 
 		hotspot = new Vector2(cursorTexture.width/2,cursorTexture.height);
-	}
+	}*/
 
 
-	void DropdownOptionSelected(Dropdown dropdown){
-		Debug.Log(" chose option "+dropdown.value);
-		if (dropdown.value==0){
-			Cursor.SetCursor(cursorTexture, hotspot, cursorMode);
-		}
-	}
+	
 
 }

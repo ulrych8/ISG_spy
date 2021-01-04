@@ -24,12 +24,16 @@ public class ViewSystem : FSystem {
 		}
 	}
 
-	protected override void onPause(int currentFrame) {
-	}
+	public ViewSystem(){
+		foreach (GameObject go in viewer){
+			FieldOfView viewInfo = go.GetComponent<FieldOfView>();
+			viewInfo.viewMesh = new Mesh();
+			viewInfo.viewMesh.name = "View of "+go.name;
+			viewInfo.viewMeshFilter.mesh = viewInfo.viewMesh;
 
-	// Use this to update member variables when system resume.
-	// Advice: avoid to update your families inside this function.
-	protected override void onResume(int currentFrame){
+			viewInfo.targetMask = LayerMask.GetMask("Player");
+			viewInfo.wallMask = LayerMask.GetMask("Wall");
+		}
 	}
 
 	// Use to process your families.
@@ -119,7 +123,7 @@ public class ViewSystem : FSystem {
 
 				if (!Physics.Raycast(currentTransform.position,dirToTarget,distToTarget,wallMask)){
 					//we see the tarfet
-					Debug.Log("I see the target");
+					//Debug.Log("I see the target");
 					Debug.DrawLine(currentTransform.position, target.position);
 				}
 			}	
