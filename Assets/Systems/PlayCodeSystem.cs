@@ -80,22 +80,29 @@ public class PlayCodeSystem : FSystem {
 					break;
 				}
 				else if (slotName=="MoveSlot"){
-					Debug.Log("knowing new slot blocMoteTo is Playing : "+info.blocMoveToPlaying );
 					Transform label = currentSlot.transform.Find("Dropdown").Find("Label");
 					info.destinationName = label.GetComponent<Text>().text;
 					
 					info.blocMoveToPlaying = true;
-					
-					Debug.Log("now Playing MoveTo");
+
 				}else if (slotName=="WaitSlot"){
 					info.blocWaitForPlaying = true;
 					Transform input = currentSlot.transform.Find("InputField").Find("Text");
 					//handle exception
 					float time = float.Parse(input.GetComponent<Text>().text);
 					//Invoke("waitFinish",time);
-					Debug.Log(time);
 					info.waitTimeLeft = time;
+
+				}else if (slotName=="DistractSlot"){
+					info.blocDistractInPlaying = true;
+					Transform input = currentSlot.transform.Find("InputField").Find("Text");
+					//handle exception
+					float time = float.Parse(input.GetComponent<Text>().text);		//time before clock rings
+					Debug.Log("Bell rings in "+time);
+					info.ringTime = time;	
+					info.crouchingTime = 0.5f;				//arbitrary time
 				}
+
 				int index = currentSlot.transform.GetSiblingIndex();
 				currentSlot = currentSlot.transform.parent.GetChild(index+1).gameObject;
 			}

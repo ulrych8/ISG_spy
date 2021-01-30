@@ -6,9 +6,15 @@ public class Playable : MonoBehaviour {
 
 	public bool blocMoveToPlaying = false; 
 	public bool blocWaitForPlaying = false; 
+	public bool blocDistractInPlaying = false; 
 
 	public string destinationName;
 	public float waitTimeLeft = 0f;
+	public float crouchingTime = 0f;
+	public float ringTime = 0f;
+
+	public GameObject clockPrefab;
+	public ParticleSystem ringParticle;
 
 	
 }

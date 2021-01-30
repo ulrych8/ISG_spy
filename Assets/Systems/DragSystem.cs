@@ -5,11 +5,7 @@ public class DragSystem : FSystem {
 
 	private Family _draggableGO = FamilyManager.getFamily(new AllOfComponents(typeof(Draggable)));
 
-	//public RectTransform slotTransform;
-    //public bool isChildOfSlotPanel = true; //set to false
-
     private Transform mainContent;
-    //private Vector3 currentPosition;
 
     private int totalChild;
     private const float extraSpace = 11f;
