@@ -20,6 +20,9 @@ public class ControlSystem : FSystem {
 
 	private bool playerIsMoving = false;
 
+	private int stressTime = 0;
+	private Vector3 stressDestination;
+
 	public ControlSystem(){
 		//only working because only one controlable
 		foreach (GameObject go in _controlableGO){
@@ -118,12 +121,21 @@ public class ControlSystem : FSystem {
 					infoGuard.guardWaiting -= Time.deltaTime;
 				}else if (infoGuard.guardWaiting<0){
 					infoGuard.guardWaiting = 0;
-					//set new patrol point
-					guardAgent.SetDestination(infoGuard.patrolPoints[infoGuard.patrolIndice]);
-					//guardAgent.CalculatePath(infoGuard.patrolPoints[infoGuard.patrolIndice], pathToDraw);
-					infoGuard.patrolIndice = (infoGuard.patrolIndice+1)%infoGuard.patrolPoints.Count;
+					if (!infoGuard.stressMode){
+						//set new patrol point
+						guardAgent.SetDestination(infoGuard.patrolPoints[infoGuard.patrolIndice]);
+						//guardAgent.CalculatePath(infoGuard.patrolPoints[infoGuard.patrolIndice], pathToDraw);
+						infoGuard.patrolIndice = (infoGuard.patrolIndice+1)%infoGuard.patrolPoints.Count;
+					}else{
+						guardAgent.SetDestination(stressDestination + new Vector3(Random.Range(-2f,2f),0f,Random.Range(-2f,2f)));
+						stressTime -- ;
+						if (stressTime<0){
+							stressTime=0;
+							guardAgent.speed/=2;
+							infoGuard.stressMode=false;
+						}
+					}
 
-					
 				}
 				else if (guardAgent.remainingDistance > guardAgent.stoppingDistance+0.2f){
 					guardCharacter.Move(guardAgent.desiredVelocity,false,false);
@@ -131,7 +143,12 @@ public class ControlSystem : FSystem {
 				else{
 					guardCharacter.Move(Vector3.zero,false,false);
 					
-					infoGuard.guardWaiting = infoGuard.waitingTime;
+					if (!infoGuard.stressMode){
+						infoGuard.guardWaiting = infoGuard.waitingTime;
+					}
+					else{
+						infoGuard.guardWaiting = infoGuard.waitingTime/3;
+					}
 				}
 
 			}
@@ -167,6 +184,21 @@ public class ControlSystem : FSystem {
     	}
     	GameObject.Instantiate(particle,pos, rot);
 
-    	
+    	yield return new WaitForSeconds(.5f);
+
+    	stressDestination = pos;
+    	stressTime = 4;
+
+    	foreach (GameObject go in _controlableGO){
+			if (! go.GetComponent<Controlable>().controlable){	//if not player character
+				NavMeshAgent guardAgent = go.GetComponent<NavMeshAgent>();
+				guardAgent.SetDestination(stressDestination);
+				guardAgent.speed*=2;
+				Patrolable infoGuard = go.GetComponent<Patrolable>();
+				infoGuard.stressMode = true;
+			}
+		}
+
     }
+
 }

@@ -10,4 +10,6 @@ public class Patrolable : MonoBehaviour {
 
 	public List<Vector3> patrolPoints = new List<Vector3>() ;
 
+	public bool stressMode = false;
+
 }
